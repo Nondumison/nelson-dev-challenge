@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API Tester</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+    .container { padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
+    input, button { padding: 10px; margin: 10px 0; width: 100%; }
+    .result { margin-top: 20px; padding: 15px; background: #f5f5f5; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>API Endpoint Tester</h1>
+    <form id="testForm">
+      <input type="email" id="email" placeholder="Your email" required>
+      <input type="url" id="apiUrl" placeholder="Your API endpoint URL" required>
+      <button type="submit">Test Endpoint</button>
+    </form>
+    <div id="result" class="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('testForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const apiUrl = document.getElementById('apiUrl').value;
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = 'Testing...';
+      
+      try {
+        const testUrl = `https://yhxzjyykdsfkdrmdxgho.supabase.co/functions/v1/junior-dev?url=${encodeURIComponent(apiUrl)}&email=${encodeURIComponent(email)}`;
+        const response = await fetch(testUrl);
+        const data = await response.json();
+        
+        resultDiv.innerHTML = `<strong>Response:</strong><br>${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>
