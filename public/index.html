@@ -6,37 +6,90 @@
     body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
     .container { padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
     input, button { padding: 10px; margin: 10px 0; width: 100%; }
-    .result { margin-top: 20px; padding: 15px; background: #f5f5f5; }
+    .result { margin-top: 20px; padding: 15px; background: #f5f5f5; white-space: pre-wrap; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>API Endpoint Tester</h1>
+    <h1>Nelson Development API Tester</h1>
+    <p>Test your character sorting API endpoint</p>
+    
     <form id="testForm">
-      <input type="email" id="email" placeholder="Your email" required>
-      <input type="url" id="apiUrl" placeholder="Your API endpoint URL" required>
-      <button type="submit">Test Endpoint</button>
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" placeholder="your@email.com" required>
+      
+      <label for="apiUrl">Your API Endpoint URL:</label>
+      <input type="url" id="apiUrl" 
+             placeholder="https://your-project.vercel.app/api" 
+             value="https://your-project.vercel.app/api" required>
+             
+      <button type="submit">Test with Nelson Validation</button>
     </form>
-    <div id="result" class="result"></div>
+    
+    <div class="result" id="result"></div>
+    
+    <hr>
+    
+    <h2>Test Locally</h2>
+    <form id="localTest">
+      <label for="testString">Test String:</label>
+      <input type="text" id="testString" placeholder="Enter any word" required>
+      <button type="submit">Test API Locally</button>
+    </form>
+    <div class="result" id="localResult"></div>
   </div>
 
   <script>
+    
     document.getElementById('testForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       const email = document.getElementById('email').value;
-      const apiUrl = document.getElementById('apiUrl').value;
+      let apiUrl = document.getElementById('apiUrl').value;
+      
+      
+      if (!apiUrl.endsWith('/api')) {
+        apiUrl = apiUrl.endsWith('/') ? apiUrl + 'api' : apiUrl + '/api';
+      }
+      
       const resultDiv = document.getElementById('result');
-      resultDiv.textContent = 'Testing...';
+      resultDiv.textContent = 'Testing with Nelson endpoint...';
       
       try {
         const testUrl = `https://yhxzjyykdsfkdrmdxgho.supabase.co/functions/v1/junior-dev?url=${encodeURIComponent(apiUrl)}&email=${encodeURIComponent(email)}`;
         const response = await fetch(testUrl);
         const data = await response.json();
         
-        resultDiv.innerHTML = `<strong>Response:</strong><br>${JSON.stringify(data, null, 2)}`;
+        resultDiv.innerHTML = `<strong>Nelson Validation Response:</strong><br>${JSON.stringify(data, null, 2)}`;
       } catch (error) {
-        resultDiv.textContent = `Error: ${error.message}`;
+        resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+      }
+    });
+
+  
+    document.getElementById('localTest').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const testString = document.getElementById('testString').value;
+      let apiUrl = document.getElementById('apiUrl').value;
+      
+     
+      if (!apiUrl.endsWith('/api')) {
+        apiUrl = apiUrl.endsWith('/') ? apiUrl + 'api' : apiUrl + '/api';
+      }
+      
+      const resultDiv = document.getElementById('localResult');
+      resultDiv.textContent = 'Testing...';
+      
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: testString })
+        });
+        
+        const data = await response.json();
+        resultDiv.innerHTML = `<strong>API Response for "${testString}":</strong><br>${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
       }
     });
   </script>
