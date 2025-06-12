@@ -42,3 +42,17 @@ This repository contains my submission for the junior developer technical challe
 The complete, deployed project with the front-end tester can be accessed here:
 
 [Your Vercel Deployment URL]
+
+
+fetch('https://nelson-dev-challenge.vercel.app/', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    data: 'testing'
+  })
+})
+.then(response => response.json())
+.then(data => console.log('SUCCESS:', data))
+.catch(error => console.error('ERROR:', error));
