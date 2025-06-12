@@ -1,27 +1,15 @@
-// const express = require("express");
-// const router = express.Router();
-
-// router.post("/", (req, res) => {
-//   try {
-//     if (!req.body.data || typeof req.body.data !== "string") {
-//       return res.status(400).json({
-//         error: 'Invalid input. Expected { "data": "string" }',
-//       });
-//     }
-
-//     const charArray = req.body.data.split("");
-//     const sortedArray = charArray.sort();
-
-//     res.json({ word: sortedArray });
-//   } catch (error) {
-//     console.error("Server error:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-// module.exports = router;
-
 export default function handler(req, res) {
+  // Handle OPTIONS preflight request
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
+  }
+
+  // Allow CORS for your POST endpoint
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
