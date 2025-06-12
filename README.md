@@ -1,19 +1,45 @@
 # Nelson Development - Junior Developer Challenge
 
-This repository contains my submission for the junior developer technical challenge. It includes a server-side API endpoint and a simple front-end for testing and validation.
+This project provides a serverless API endpoint that processes strings and a frontend tester to validate API functionality. The API accepts POST requests containing a string, sorts its characters alphabetically, and returns the sorted array as a word.
+
+### Live Demo
+
+[Demo](https://nelson-dev-challenge.vercel.app/)
 
 ## Features
 
--   **Backend API**: A Node.js/Express serverless function deployed on Vercel. It receives a string, sorts its characters alphabetically, and returns the result.
--   **Frontend Tester**: A clean, user-friendly HTML/CSS/JS interface to test the validation endpoint provided in the challenge instructions.
+- POST API endpoint that accepts string input
+- Converts strings to sorted character arrays
+- Frontend interface for testing the API
+- Support for local and remote API testing
+- CORS enabled
+- Error handling
 
-## Tech Stack
+## API Endpoint
 
--   **Backend**: Node.js, Express.js
--   **Frontend**: HTML, CSS (Pico.css), Vanilla JavaScript
--   **Deployment**: Vercel
+### POST /api
 
----
+Accepts JSON data in the following format:
+
+```json
+{
+  "data": "string"
+}
+```
+
+Returns:
+
+```json
+{
+  "word": ["sorted", "characters", "array"]
+}
+```
+
+### Technical Implementation
+
+Backend: Node.js with Vercel serverless functions
+Frontend: HTML, CSS, JavaScript
+Deployment: Vercel
 
 ### How to Run Locally
 
@@ -31,28 +57,6 @@ This repository contains my submission for the junior developer technical challe
     ```
 4.  **Start the local development server (optional, for Vercel):**
     You can use the Vercel CLI to run a local instance that mirrors the production environment.
-    ```bash 
+    ```bash
     vercel dev
     ```
-
----
-
-### Live Demo
-
-The complete, deployed project with the front-end tester can be accessed here:
-
-[Your Vercel Deployment URL]
-
-
-fetch('https://nelson-dev-challenge.vercel.app/', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    data: 'testing'
-  })
-})
-.then(response => response.json())
-.then(data => console.log('SUCCESS:', data))
-.catch(error => console.error('ERROR:', error));

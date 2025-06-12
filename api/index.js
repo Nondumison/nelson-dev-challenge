@@ -1,5 +1,4 @@
 export default function handler(req, res) {
-  // Handle OPTIONS preflight request
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -7,7 +6,6 @@ export default function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Allow CORS for your POST endpoint
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   if (req.method !== "POST") {
@@ -23,7 +21,12 @@ export default function handler(req, res) {
       });
     }
 
-    const sorted = data.split("").sort();
+    const sorted = data
+      .toLowerCase()
+      .split("")
+      .filter((char) => char !== " ")
+      .sort();
+
     res.status(200).json({ word: sorted });
   } catch (err) {
     console.error("Error:", err);
