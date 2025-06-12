@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelson Dev Challenge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body { padding: 2rem; }
+        pre { background-color: #f7f7f7; padding: 1rem; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <hgroup>
+            <h1>Junior Developer Task</h1>
+            <h2>API Test & Validation Interface</h2>
+        </hgroup>
+        <form id="test-form">
+            <label for="apiUrl">Your Deployed API URL:</label>
+            <input type="url" id="apiUrl" name="apiUrl" placeholder="https://your-app-name.vercel.app" required>
+            <label for="email">Your Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            <button type="submit" id="submit-btn">Test & Validate</button>
+        </form>
+        <article>
+            <header>Result:</header>
+            <pre id="result">The response from the validation server will appear here...</pre>
+        </article>
+    </main>
+
+    <script>
+        const form = document.getElementById('test-form');
+        const resultDiv = document.getElementById('result');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const apiUrl = document.getElementById('apiUrl').value;
+            const email = document.getElementById('email').value;
+
+            submitBtn.setAttribute('aria-busy', 'true');
+            resultDiv.textContent = 'Testing...';
+
+            const validationUrl = `https://yhxzjyykdsfkdrmdxgho.supabase.co/functions/v1/junior-dev?url=${encodeURIComponent(apiUrl)}&email=${encodeURIComponent(email)}`;
+
+            try {
+                const response = await fetch(validationUrl);
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = `An error occurred: ${error.message}`;
+            } finally {
+                submitBtn.setAttribute('aria-busy', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
