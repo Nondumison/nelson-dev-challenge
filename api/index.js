@@ -21,14 +21,11 @@
 
 // module.exports = router;
 
-const express = require("express");
-const cors = require("cors");
+export default function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.post("/", (req, res) => {
   try {
     const { data } = req.body;
 
@@ -39,11 +36,9 @@ app.post("/", (req, res) => {
     }
 
     const sorted = data.split("").sort();
-    res.json({ word: sorted });
+    res.status(200).json({ word: sorted });
   } catch (err) {
     console.error("Error:", err);
     res.status(500).json({ error: "Internal server error" });
   }
-});
-
-module.exports = app;
+}
